@@ -1,0 +1,10 @@
+REPORT zabapgit_deps.
+
+PARAMETERS: p_git TYPE text200 OBLIGATORY.
+
+START-OF-SELECTION.
+  PERFORM run.
+
+FORM run.
+
+ENDFORM.
