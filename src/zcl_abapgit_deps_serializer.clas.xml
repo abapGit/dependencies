@@ -3,23 +3,15 @@
  <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
   <asx:values>
    <VSEOCLASS>
-    <CLSNAME>ZCL_ABAPGIT_DEPS_FIND</CLSNAME>
+    <CLSNAME>ZCL_ABAPGIT_DEPS_SERIALIZER</CLSNAME>
     <VERSION>1</VERSION>
     <LANGU>E</LANGU>
-    <DESCRIPT>Find Logic</DESCRIPT>
+    <DESCRIPT>Serializer</DESCRIPT>
     <STATE>1</STATE>
     <CLSCCINCL>X</CLSCCINCL>
     <FIXPT>X</FIXPT>
     <UNICODE>X</UNICODE>
    </VSEOCLASS>
-   <DESCRIPTIONS>
-    <SEOCOMPOTX>
-     <CLSNAME>ZCL_ABAPGIT_DEPS_FIND</CLSNAME>
-     <CMPNAME>MV_PACKAGE</CMPNAME>
-     <LANGU>E</LANGU>
-     <DESCRIPT>Package</DESCRIPT>
-    </SEOCOMPOTX>
-   </DESCRIPTIONS>
   </asx:values>
  </asx:abap>
 </abapGit>

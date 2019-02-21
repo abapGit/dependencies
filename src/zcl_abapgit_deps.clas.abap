@@ -55,27 +55,16 @@ CLASS ZCL_ABAPGIT_DEPS IMPLEMENTATION.
 
     mv_git_url = iv_git_url.
     mv_package = iv_package.
-    mv_branch = 'master'.
+    mv_branch  = 'master'.
 
   ENDMETHOD.
 
 
   METHOD get_local.
 
-* todo, find for mv_package
+    DATA(lt_tadir) = NEW zcl_abapgit_deps_find( mv_package )->find( ).
 
-    DATA(lt_tadir) = zcl_abapgit_deps_find=>find( mv_package ).
-
-    DATA(lo_log) = NEW zcl_abapgit_log( ).
-
-    DATA(lt_local) = NEW zcl_abapgit_serialize( )->serialize(
-      it_tadir    = lt_tadir
-      iv_language = sy-langu
-      io_log      = lo_log ).
-
-    LOOP AT lt_local INTO DATA(ls_local).
-      APPEND ls_local-file TO rt_local.
-    ENDLOOP.
+    rt_local = NEW zcl_abapgit_deps_serializer( )->serialize( lt_tadir ).
 
   ENDMETHOD.
 
@@ -84,21 +73,21 @@ CLASS ZCL_ABAPGIT_DEPS IMPLEMENTATION.
 
     DATA(lt_local) = get_local( ).
 
-    DATA(ls_remote) = zcl_abapgit_git_porcelain=>pull(
-      iv_url         = mv_git_url
-      iv_branch_name = mv_branch ).
-
-    DATA(ls_stage) = build_stage(
-      it_local  = lt_local
-      it_remote = ls_remote-files ).
-
-    zcl_abapgit_git_porcelain=>push(
-      is_comment     = ls_stage-comment
-      io_stage       = ls_stage-stage
-      it_old_objects = ls_remote-objects
-      iv_parent      = ls_remote-branch
-      iv_url         = mv_git_url
-      iv_branch_name = mv_branch ).
+*    DATA(ls_remote) = zcl_abapgit_git_porcelain=>pull(
+*      iv_url         = mv_git_url
+*      iv_branch_name = mv_branch ).
+*
+*    DATA(ls_stage) = build_stage(
+*      it_local  = lt_local
+*      it_remote = ls_remote-files ).
+*
+*    zcl_abapgit_git_porcelain=>push(
+*      is_comment     = ls_stage-comment
+*      io_stage       = ls_stage-stage
+*      it_old_objects = ls_remote-objects
+*      iv_parent      = ls_remote-branch
+*      iv_url         = mv_git_url
+*      iv_branch_name = mv_branch ).
 
   ENDMETHOD.
 ENDCLASS.
