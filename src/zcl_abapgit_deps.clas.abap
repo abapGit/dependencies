@@ -29,7 +29,9 @@ CLASS zcl_abapgit_deps DEFINITION
         !it_local       TYPE zif_abapgit_definitions=>ty_files_tt
         !it_remote      TYPE zif_abapgit_definitions=>ty_files_tt
       RETURNING
-        VALUE(rs_stage) TYPE ty_stage .
+        VALUE(rs_stage) TYPE ty_stage
+      RAISING
+        zcx_abapgit_exception .
     METHODS get_local
       RETURNING
         VALUE(rt_local) TYPE zif_abapgit_definitions=>ty_files_tt
@@ -45,8 +47,35 @@ CLASS ZCL_ABAPGIT_DEPS IMPLEMENTATION.
 
   METHOD build_stage.
 
-* todo
-    BREAK-POINT.
+    rs_stage-comment-committer-email = 'upload@localhost'.
+    rs_stage-comment-committer-name = 'upload'.
+    rs_stage-comment-comment = 'Upload'.
+
+    CREATE OBJECT rs_stage-stage.
+
+    LOOP AT it_local INTO DATA(ls_local).
+      READ TABLE it_remote WITH KEY
+        path = ls_local-path
+        filename = ls_local-filename
+        sha1 = ls_local-sha1 TRANSPORTING NO FIELDS.
+      IF sy-subrc <> 0.
+        rs_stage-stage->add(
+          iv_path     = ls_local-path
+          iv_filename = ls_local-filename
+          iv_data     = ls_local-data ).
+      ENDIF.
+    ENDLOOP.
+
+    LOOP AT it_remote INTO DATA(ls_remote).
+      READ TABLE it_local WITH KEY
+        path = ls_remote-path
+        filename = ls_remote-filename TRANSPORTING NO FIELDS.
+      IF sy-subrc <> 0.
+        rs_stage-stage->rm(
+          iv_path     = ls_remote-path
+          iv_filename = ls_remote-filename ).
+      ENDIF.
+    ENDLOOP.
 
   ENDMETHOD.
 
@@ -55,7 +84,7 @@ CLASS ZCL_ABAPGIT_DEPS IMPLEMENTATION.
 
     mv_git_url = iv_git_url.
     mv_package = iv_package.
-    mv_branch  = 'master'.
+    mv_branch  = 'refs/heads/master'.
 
   ENDMETHOD.
 
@@ -73,21 +102,25 @@ CLASS ZCL_ABAPGIT_DEPS IMPLEMENTATION.
 
     DATA(lt_local) = get_local( ).
 
-*    DATA(ls_remote) = zcl_abapgit_git_porcelain=>pull(
-*      iv_url         = mv_git_url
-*      iv_branch_name = mv_branch ).
-*
-*    DATA(ls_stage) = build_stage(
-*      it_local  = lt_local
-*      it_remote = ls_remote-files ).
-*
-*    zcl_abapgit_git_porcelain=>push(
-*      is_comment     = ls_stage-comment
-*      io_stage       = ls_stage-stage
-*      it_old_objects = ls_remote-objects
-*      iv_parent      = ls_remote-branch
-*      iv_url         = mv_git_url
-*      iv_branch_name = mv_branch ).
+    DATA(ls_remote) = zcl_abapgit_git_porcelain=>pull(
+      iv_url         = mv_git_url
+      iv_branch_name = mv_branch ).
+
+    DELETE ls_remote-files WHERE path <> '/src/'.
+
+    DATA(ls_stage) = build_stage(
+      it_local  = lt_local
+      it_remote = ls_remote-files ).
+
+    IF ls_stage-stage->count( ) > 0.
+      zcl_abapgit_git_porcelain=>push(
+        is_comment     = ls_stage-comment
+        io_stage       = ls_stage-stage
+        it_old_objects = ls_remote-objects
+        iv_parent      = ls_remote-branch
+        iv_url         = mv_git_url
+        iv_branch_name = mv_branch ).
+    ENDIF.
 
   ENDMETHOD.
 ENDCLASS.

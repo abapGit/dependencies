@@ -128,7 +128,10 @@ CLASS ZCL_ABAPGIT_DEPS_SERIALIZER IMPLEMENTATION.
       build_clas( CHANGING cs_files = ls_files_item ).
 
       APPEND LINES OF ls_files_item-files TO rt_files.
+    ENDLOOP.
 
+    LOOP AT rt_files ASSIGNING FIELD-SYMBOL(<ls_file>).
+      <ls_file>-path = '/src/'.
     ENDLOOP.
 
   ENDMETHOD.
