@@ -17,6 +17,26 @@
      <ENTRY>Dependencies</ENTRY>
      <LENGTH>12</LENGTH>
     </item>
+    <item>
+     <ID>S</ID>
+     <KEY>P_DEVC</KEY>
+     <ENTRY>.</ENTRY>
+     <LENGTH>9</LENGTH>
+     <SPLIT>D</SPLIT>
+    </item>
+    <item>
+     <ID>S</ID>
+     <KEY>P_GIT</KEY>
+     <ENTRY>.</ENTRY>
+     <LENGTH>9</LENGTH>
+     <SPLIT>D</SPLIT>
+    </item>
+    <item>
+     <ID>S</ID>
+     <KEY>P_TEST</KEY>
+     <ENTRY>Test Mode</ENTRY>
+     <LENGTH>17</LENGTH>
+    </item>
    </TPOOL>
   </asx:values>
  </asx:abap>

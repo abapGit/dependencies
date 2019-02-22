@@ -1,7 +1,8 @@
 REPORT zabapgit_deps.
 
 PARAMETERS: p_git  TYPE text200 OBLIGATORY,
-            p_devc TYPE devclass OBLIGATORY.
+            p_devc TYPE devclass OBLIGATORY,
+            p_test TYPE c AS CHECKBOX.
 
 INCLUDE zabapgit_password_dialog.
 INCLUDE zabapgit_forms.
@@ -26,6 +27,6 @@ FORM deps RAISING zcx_abapgit_exception.
 
   NEW zcl_abapgit_deps(
     iv_git_url = CONV #( p_git )
-    iv_package = p_devc )->run( ).
+    iv_package = p_devc )->run( p_test ).
 
 ENDFORM.

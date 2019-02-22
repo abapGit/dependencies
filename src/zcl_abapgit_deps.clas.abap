@@ -9,9 +9,10 @@ CLASS zcl_abapgit_deps DEFINITION
         !iv_git_url TYPE string
         !iv_package TYPE devclass .
     METHODS run
+      IMPORTING
+        !iv_test TYPE abap_bool DEFAULT abap_false
       RAISING
         zcx_abapgit_exception .
-
   PROTECTED SECTION.
 
     TYPES:
@@ -106,13 +107,17 @@ CLASS ZCL_ABAPGIT_DEPS IMPLEMENTATION.
       iv_url         = mv_git_url
       iv_branch_name = mv_branch ).
 
+    READ TABLE ls_remote-files WITH KEY path = '/' filename = '.abapgit.xml'
+      TRANSPORTING NO FIELDS.
+    ASSERT sy-subrc <> 0.
+
     DELETE ls_remote-files WHERE path <> '/src/'.
 
     DATA(ls_stage) = build_stage(
       it_local  = lt_local
       it_remote = ls_remote-files ).
 
-    IF ls_stage-stage->count( ) > 0.
+    IF ls_stage-stage->count( ) > 0 AND iv_test = abap_false..
       zcl_abapgit_git_porcelain=>push(
         is_comment     = ls_stage-comment
         io_stage       = ls_stage-stage
