@@ -76,6 +76,8 @@ CLASS ZCL_ABAPGIT_DEPS_FIND IMPLEMENTATION.
 
   METHOD convert_senvi_to_tadir.
 
+* do not use CL_WB_RIS_ENVIRONMENT, it does not exist in 740sp08
+
     cl_wb_ris_environment=>convert_senvi_to_tadir(
       EXPORTING
         senvi       = it_senvi
@@ -121,9 +123,9 @@ CLASS ZCL_ABAPGIT_DEPS_FIND IMPLEMENTATION.
 
   METHOD find_clas_dependencies.
 
-* todo, type of CT_TADIR ? huh
+    DATA lt_includes TYPE STANDARD TABLE OF programm WITH EMPTY KEY.
+    DATA lt_wbcrossgt TYPE wbcrossgtt.
 
-    DATA: lt_includes TYPE STANDARD TABLE OF programm WITH EMPTY KEY.
 
     DATA(lv_clsname) = CONV seoclsname( iv_name ).
 
@@ -138,7 +140,6 @@ CLASS ZCL_ABAPGIT_DEPS_FIND IMPLEMENTATION.
       APPEND cl_oo_classname_service=>get_prisec_name( CONV #( iv_name ) ) TO lt_includes.
     ENDIF.
 
-    DATA: lt_wbcrossgt TYPE wbcrossgtt.
     SELECT * FROM wbcrossgt INTO CORRESPONDING FIELDS OF TABLE @lt_wbcrossgt
       FOR ALL ENTRIES IN @lt_includes
       WHERE include = @lt_includes-table_line
@@ -172,9 +173,6 @@ CLASS ZCL_ABAPGIT_DEPS_FIND IMPLEMENTATION.
           lt_tadir       TYPE ty_tadir_tt,
           lt_environment TYPE senvi_tab.
 
-*    IF is_object-obj_name = 'UCONHTTPSYSFIELDS_BASED_ON_SRV'.
-*      BREAK-POINT.
-*    ENDIF.
 
     IF iv_level > 1 AND is_object-object = 'CLAS'.
       find_clas_dependencies(
