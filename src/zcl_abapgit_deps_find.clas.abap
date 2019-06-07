@@ -14,14 +14,15 @@ CLASS zcl_abapgit_deps_find DEFINITION
         zcx_abapgit_exception .
   PROTECTED SECTION.
 
-    TYPES: BEGIN OF ty_tadir,
-             ref_obj_type TYPE trobjtype,
-             ref_obj_name TYPE sobj_name,
-           END OF ty_tadir .
+    TYPES:
+      BEGIN OF ty_tadir,
+        ref_obj_type TYPE trobjtype,
+        ref_obj_name TYPE sobj_name,
+      END OF ty_tadir .
+    TYPES:
+      ty_tadir_tt TYPE STANDARD TABLE OF ty_tadir WITH DEFAULT KEY .
 
-    TYPES: ty_tadir_tt TYPE STANDARD TABLE OF ty_tadir WITH DEFAULT KEY.
-
-    DATA mt_total TYPE ty_tadir_tt.
+    DATA mt_total TYPE ty_tadir_tt .
     DATA mv_max_level TYPE i VALUE 20 ##NO_TEXT.
     DATA mv_package TYPE devclass .
 
@@ -29,7 +30,7 @@ CLASS zcl_abapgit_deps_find DEFINITION
       IMPORTING
         !it_senvi       TYPE senvi_tab
       RETURNING
-        VALUE(rt_tadir) TYPE ty_tadir_tt.
+        VALUE(rt_tadir) TYPE ty_tadir_tt .
     METHODS find_clas_dependencies
       IMPORTING
         !iv_name  TYPE tadir-obj_name
