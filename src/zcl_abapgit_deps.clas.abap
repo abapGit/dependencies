@@ -117,7 +117,7 @@ CLASS ZCL_ABAPGIT_DEPS IMPLEMENTATION.
       it_local  = lt_local
       it_remote = ls_remote-files ).
 
-    IF ls_stage-stage->count( ) > 0 AND iv_test = abap_false..
+    IF ls_stage-stage->count( ) > 0 AND iv_test = abap_false.
       zcl_abapgit_git_porcelain=>push(
         is_comment     = ls_stage-comment
         io_stage       = ls_stage-stage
