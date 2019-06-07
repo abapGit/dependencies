@@ -14,16 +14,29 @@ CLASS zcl_abapgit_deps_find DEFINITION
         zcx_abapgit_exception .
   PROTECTED SECTION.
 
-    DATA mt_total TYPE if_ris_environment_types=>ty_t_senvi_tadir .
+    TYPES:
+      BEGIN OF ty_tadir,
+        ref_obj_type TYPE trobjtype,
+        ref_obj_name TYPE sobj_name,
+      END OF ty_tadir .
+    TYPES:
+      ty_tadir_tt TYPE STANDARD TABLE OF ty_tadir WITH DEFAULT KEY .
+
+    DATA mt_total TYPE ty_tadir_tt .
     DATA mv_max_level TYPE i VALUE 20 ##NO_TEXT.
     DATA mv_package TYPE devclass .
 
+    METHODS convert_senvi_to_tadir
+      IMPORTING
+        !it_senvi       TYPE senvi_tab
+      RETURNING
+        VALUE(rt_tadir) TYPE ty_tadir_tt .
     METHODS find_clas_dependencies
       IMPORTING
         !iv_name  TYPE tadir-obj_name
         !iv_level TYPE i
       CHANGING
-        !ct_tadir TYPE if_ris_environment_types=>ty_t_senvi_tadir .
+        !ct_tadir TYPE ty_tadir_tt .
     METHODS get_dependencies
       IMPORTING
         !is_object TYPE zif_abapgit_definitions=>ty_tadir
@@ -32,7 +45,7 @@ CLASS zcl_abapgit_deps_find DEFINITION
       IMPORTING
         !it_wbcrossgt TYPE wbcrossgtt
       CHANGING
-        !ct_tadir     TYPE if_ris_environment_types=>ty_t_senvi_tadir .
+        !ct_tadir     TYPE ty_tadir_tt .
     METHODS update_index
       IMPORTING
         !iv_name TYPE seoclsname .
@@ -49,6 +62,24 @@ CLASS ZCL_ABAPGIT_DEPS_FIND IMPLEMENTATION.
     ASSERT NOT iv_package IS INITIAL.
 
     mv_package = iv_package.
+
+  ENDMETHOD.
+
+
+  METHOD convert_senvi_to_tadir.
+
+* do not use CL_WB_RIS_ENVIRONMENT, it does not exist in 740sp08
+
+    LOOP AT it_senvi INTO DATA(ls_senvi) WHERE type = 'CLAS'
+        OR type = 'DTEL'
+        OR type = 'TABL'
+        OR type = 'TYPE'
+        OR type = 'INTF'.
+
+      APPEND VALUE #(
+        ref_obj_type = ls_senvi-type
+        ref_obj_name = ls_senvi-object ) TO rt_tadir.
+    ENDLOOP.
 
   ENDMETHOD.
 
@@ -89,9 +120,9 @@ CLASS ZCL_ABAPGIT_DEPS_FIND IMPLEMENTATION.
 
   METHOD find_clas_dependencies.
 
-* todo, type of CT_TADIR ? huh
+    DATA lt_includes TYPE STANDARD TABLE OF programm WITH EMPTY KEY.
+    DATA lt_wbcrossgt TYPE wbcrossgtt.
 
-    DATA: lt_includes TYPE STANDARD TABLE OF programm WITH EMPTY KEY.
 
     DATA(lv_clsname) = CONV seoclsname( iv_name ).
 
@@ -106,7 +137,6 @@ CLASS ZCL_ABAPGIT_DEPS_FIND IMPLEMENTATION.
       APPEND cl_oo_classname_service=>get_prisec_name( CONV #( iv_name ) ) TO lt_includes.
     ENDIF.
 
-    DATA: lt_wbcrossgt TYPE wbcrossgtt.
     SELECT * FROM wbcrossgt INTO CORRESPONDING FIELDS OF TABLE @lt_wbcrossgt
       FOR ALL ENTRIES IN @lt_includes
       WHERE include = @lt_includes-table_line
@@ -128,7 +158,7 @@ CLASS ZCL_ABAPGIT_DEPS_FIND IMPLEMENTATION.
         CHANGING
           ct_tadir     = ct_tadir ).
     ELSE.
-      BREAK-POINT.
+      ASSERT 0 = 1.
     ENDIF.
 
   ENDMETHOD.
@@ -137,12 +167,9 @@ CLASS ZCL_ABAPGIT_DEPS_FIND IMPLEMENTATION.
   METHOD get_dependencies.
 
     DATA: lv_obj_type    TYPE euobj-id,
-          lt_tadir       TYPE if_ris_environment_types=>ty_t_senvi_tadir,
+          lt_tadir       TYPE ty_tadir_tt,
           lt_environment TYPE senvi_tab.
 
-*    IF is_object-obj_name = 'UCONHTTPSYSFIELDS_BASED_ON_SRV'.
-*      BREAK-POINT.
-*    ENDIF.
 
     IF iv_level > 1 AND is_object-object = 'CLAS'.
       find_clas_dependencies(
@@ -168,15 +195,10 @@ CLASS ZCL_ABAPGIT_DEPS_FIND IMPLEMENTATION.
           OTHERS         = 4.
       IF sy-subrc = 3.
         RETURN.
-      ELSEIF sy-subrc <> 0.
-        BREAK-POINT.
       ENDIF.
+      ASSERT sy-subrc <> 0.
 
-      cl_wb_ris_environment=>convert_senvi_to_tadir(
-        EXPORTING
-          senvi       = lt_environment
-        IMPORTING
-          senvi_tadir = lt_tadir ).
+      lt_tadir = convert_senvi_to_tadir( lt_environment ).
     ENDIF.
 
     SORT lt_tadir BY ref_obj_type ASCENDING ref_obj_name ASCENDING.

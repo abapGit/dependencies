@@ -23,10 +23,14 @@ AT SELECTION-SCREEN.
 START-OF-SELECTION.
   PERFORM deps.
 
-FORM deps RAISING zcx_abapgit_exception.
+FORM deps.
 
-  NEW zcl_abapgit_deps(
-    iv_git_url = CONV #( p_git )
-    iv_package = p_devc )->run( p_test ).
+  TRY.
+      NEW zcl_abapgit_deps(
+        iv_git_url = CONV #( p_git )
+        iv_package = p_devc )->run( p_test ).
+    CATCH zcx_abapgit_exception INTO DATA(lx_error).
+      MESSAGE lx_error TYPE 'E'.
+  ENDTRY.
 
 ENDFORM.
