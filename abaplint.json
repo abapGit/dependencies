@@ -24,7 +24,7 @@
       "exclude": []
     },
     "check_variables": {
-      "enabled": true,
+      "enabled": false,
       "exclude": []
     },
     "class_attribute_names": {
@@ -266,7 +266,7 @@
       "exclude": []
     },
     "superclass_final": {
-      "enabled": true,
+      "enabled": false,
       "exclude": []
     },
     "tabl_enhancement_category": {
