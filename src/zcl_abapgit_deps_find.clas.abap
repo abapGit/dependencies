@@ -17,15 +17,6 @@ CLASS zcl_abapgit_deps_find DEFINITION
     TYPES: BEGIN OF ty_tadir,
              ref_obj_type TYPE trobjtype,
              ref_obj_name TYPE sobj_name,
-             ref_sub_type TYPE trobjtype,
-             ref_sub_name TYPE sobj_sname,
-             ref_int_type TYPE seu_objtyp,
-             ref_int_name TYPE seu_objkey,
-             obj_type     TYPE trobjtype,
-             obj_name     TYPE sobj_name,
-             sub_type     TYPE trobjtype,
-             sub_name     TYPE sobj_sname,
-             include_name TYPE progname,
            END OF ty_tadir .
 
     TYPES: ty_tadir_tt TYPE STANDARD TABLE OF ty_tadir WITH DEFAULT KEY.
@@ -78,11 +69,16 @@ CLASS ZCL_ABAPGIT_DEPS_FIND IMPLEMENTATION.
 
 * do not use CL_WB_RIS_ENVIRONMENT, it does not exist in 740sp08
 
-    cl_wb_ris_environment=>convert_senvi_to_tadir(
-      EXPORTING
-        senvi       = it_senvi
-      IMPORTING
-        senvi_tadir = rt_tadir ).
+    LOOP AT it_senvi INTO DATA(ls_senvi) WHERE type = 'CLAS'
+        OR type = 'DTEL'
+        OR type = 'TABL'
+        OR type = 'TYPE'
+        OR type = 'INTF'.
+
+      APPEND VALUE #(
+        ref_obj_type = ls_senvi-type
+        ref_obj_name = ls_senvi-object ) TO rt_tadir.
+    ENDLOOP.
 
   ENDMETHOD.
 
