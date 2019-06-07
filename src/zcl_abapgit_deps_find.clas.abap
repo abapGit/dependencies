@@ -158,7 +158,7 @@ CLASS ZCL_ABAPGIT_DEPS_FIND IMPLEMENTATION.
         CHANGING
           ct_tadir     = ct_tadir ).
     ELSE.
-      BREAK-POINT.
+      ASSERT 0 = 1.
     ENDIF.
 
   ENDMETHOD.
@@ -195,9 +195,8 @@ CLASS ZCL_ABAPGIT_DEPS_FIND IMPLEMENTATION.
           OTHERS         = 4.
       IF sy-subrc = 3.
         RETURN.
-      ELSEIF sy-subrc <> 0.
-        BREAK-POINT.
       ENDIF.
+      ASSERT sy-subrc <> 0.
 
       lt_tadir = convert_senvi_to_tadir( lt_environment ).
     ENDIF.
