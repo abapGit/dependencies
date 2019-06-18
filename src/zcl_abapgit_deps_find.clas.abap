@@ -196,7 +196,7 @@ CLASS ZCL_ABAPGIT_DEPS_FIND IMPLEMENTATION.
       IF sy-subrc = 3.
         RETURN.
       ENDIF.
-      ASSERT sy-subrc <> 0.
+      ASSERT sy-subrc = 0.
 
       lt_tadir = convert_senvi_to_tadir( lt_environment ).
     ENDIF.
