@@ -60,6 +60,7 @@ CLASS ZCL_ABAPGIT_DEPS IMPLEMENTATION.
         filename = ls_local-filename
         sha1 = ls_local-sha1 TRANSPORTING NO FIELDS.
       IF sy-subrc <> 0.
+        WRITE: / 'Add', ls_local-path, ls_local-filename.
         rs_stage-stage->add(
           iv_path     = ls_local-path
           iv_filename = ls_local-filename
@@ -72,6 +73,7 @@ CLASS ZCL_ABAPGIT_DEPS IMPLEMENTATION.
         path = ls_remote-path
         filename = ls_remote-filename TRANSPORTING NO FIELDS.
       IF sy-subrc <> 0.
+        WRITE: / 'Remove', ls_local-path, ls_local-filename.
         rs_stage-stage->rm(
           iv_path     = ls_remote-path
           iv_filename = ls_remote-filename ).
