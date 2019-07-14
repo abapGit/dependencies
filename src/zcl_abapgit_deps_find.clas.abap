@@ -280,15 +280,11 @@ CLASS ZCL_ABAPGIT_DEPS_FIND IMPLEMENTATION.
 
   METHOD update_index.
 
-    DATA: lo_cross   TYPE REF TO cl_wb_crossreference,
-          lv_include TYPE programm.
+    DATA(lv_include) = cl_oo_classname_service=>get_classpool_name( iv_name ).
 
-    lv_include = cl_oo_classname_service=>get_classpool_name( iv_name ).
-
-    CREATE OBJECT lo_cross
-      EXPORTING
-        p_name    = lv_include
-        p_include = lv_include.
+    DATA(lo_cross) = NEW cl_wb_crossreference(
+      p_name    = lv_include
+      p_include = lv_include ).
 
     lo_cross->index_actualize( ).
 

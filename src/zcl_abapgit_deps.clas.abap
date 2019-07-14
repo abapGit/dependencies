@@ -52,7 +52,7 @@ CLASS ZCL_ABAPGIT_DEPS IMPLEMENTATION.
     rs_stage-comment-committer-name = 'upload'.
     rs_stage-comment-comment = 'Upload'.
 
-    CREATE OBJECT rs_stage-stage.
+    rs_stage-stage = NEW #( ).
 
     LOOP AT it_local INTO DATA(ls_local).
       READ TABLE it_remote WITH KEY
