@@ -1,5 +1,7 @@
 REPORT zabapgit_deps.
 
+TABLES: sscrfields.
+
 PARAMETERS: p_git  TYPE text200 OBLIGATORY,
             p_devc TYPE devclass OBLIGATORY,
             p_test TYPE c AS CHECKBOX.
