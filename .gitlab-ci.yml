@@ -1,0 +1,30 @@
+#
+# Pull from GitHub source repository
+#
+stages:
+  - github-pull
+
+before_script:
+  - git --version
+  - git origin set-url --push origin "https://gitlab-ci-token:TucNrMhDsCL9MSwDmhyC@vdocker.sap.internal:8929/tools/abaplint-dependencies.git"
+  - git remote rm source
+  - git remote add source https://github.com/abapGit/dependencies.git
+  - git remote -v
+  - git config user.email "github@redwood.com"
+  - git config user.name "github"
+
+after_script:
+  - git log -5 --oneline
+
+do-pull:
+  stage: github-pull
+  image: 
+    name: alpine/git
+    entrypoint: [""]
+  tags:
+  - docker
+  # only:
+  # - schedules
+  script:
+  - git pull source master
+  - git push origin master
