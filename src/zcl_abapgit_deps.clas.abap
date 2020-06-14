@@ -109,6 +109,8 @@ CLASS ZCL_ABAPGIT_DEPS IMPLEMENTATION.
       iv_url         = mv_git_url
       iv_branch_name = mv_branch ).
 
+* dont push to repositories containing abapgit code
+* everything will be overwritten in the remote repo
     READ TABLE ls_remote-files WITH KEY path = '/' filename = '.abapgit.xml'
       TRANSPORTING NO FIELDS.
     ASSERT sy-subrc <> 0.
