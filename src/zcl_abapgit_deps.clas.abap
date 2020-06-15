@@ -6,8 +6,11 @@ CLASS zcl_abapgit_deps DEFINITION
 
     METHODS constructor
       IMPORTING
-        !iv_git_url TYPE string
-        !iv_package TYPE devclass .
+        !iv_git_url     TYPE string
+        !iv_packages    TYPE tab_packages
+        !iv_git_name    TYPE string
+        !iv_git_email   TYPE string
+        !iv_git_comment TYPE string .
     METHODS run
       IMPORTING
         !iv_test TYPE abap_bool DEFAULT abap_false
@@ -23,7 +26,10 @@ CLASS zcl_abapgit_deps DEFINITION
 
     DATA mv_branch TYPE string .
     DATA mv_git_url TYPE string .
-    DATA mv_package TYPE devclass .
+    DATA mv_packages TYPE tab_packages .
+    DATA mv_git_name TYPE string .
+    DATA mv_git_email TYPE string .
+    DATA mv_git_comment TYPE string .
 
     METHODS build_stage
       IMPORTING
@@ -48,9 +54,9 @@ CLASS ZCL_ABAPGIT_DEPS IMPLEMENTATION.
 
   METHOD build_stage.
 
-    rs_stage-comment-committer-email = 'upload@localhost'.
-    rs_stage-comment-committer-name = 'upload'.
-    rs_stage-comment-comment = 'Upload'.
+    rs_stage-comment-committer-email = mv_git_email.
+    rs_stage-comment-committer-name = mv_git_name.
+    rs_stage-comment-comment = mv_git_comment.
 
     rs_stage-stage = NEW #( ).
 
@@ -86,17 +92,24 @@ CLASS ZCL_ABAPGIT_DEPS IMPLEMENTATION.
   METHOD constructor.
 
     mv_git_url = iv_git_url.
-    mv_package = iv_package.
+    mv_packages = iv_packages.
     mv_branch  = 'refs/heads/master'.
+    mv_git_name = iv_git_name.
+    mv_git_email = iv_git_email.
+    mv_git_comment = iv_git_comment.
 
   ENDMETHOD.
 
 
   METHOD get_local.
 
-    DATA(lt_tadir) = NEW zcl_abapgit_deps_find( mv_package )->find( ).
+    DATA: lp_package LIKE LINE OF mv_packages.
 
-    rt_local = NEW zcl_abapgit_deps_serializer( )->serialize( lt_tadir ).
+    LOOP AT mv_packages INTO lp_package.
+      DATA(lt_tadir) = NEW zcl_abapgit_deps_find( lp_package )->find( ).
+      DATA(lt_local) = NEW zcl_abapgit_deps_serializer( )->serialize( lt_tadir ).
+      APPEND LINES OF lt_local TO rt_local.
+    ENDLOOP.
 
   ENDMETHOD.
 
