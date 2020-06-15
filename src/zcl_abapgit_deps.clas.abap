@@ -17,34 +17,34 @@ CLASS zcl_abapgit_deps DEFINITION
         !iv_test TYPE abap_bool DEFAULT abap_false
       RAISING
         zcx_abapgit_exception .
-PROTECTED SECTION.
+  PROTECTED SECTION.
 
-  TYPES:
-    BEGIN OF ty_stage,
-      comment TYPE zif_abapgit_definitions=>ty_comment,
-      stage   TYPE REF TO zcl_abapgit_stage,
-    END OF ty_stage .
+    TYPES:
+      BEGIN OF ty_stage,
+        comment TYPE zif_abapgit_definitions=>ty_comment,
+        stage   TYPE REF TO zcl_abapgit_stage,
+      END OF ty_stage .
 
-  DATA mv_branch TYPE string .
-  DATA mv_git_url TYPE string .
-  DATA mv_packages TYPE tab_packages .
-  DATA mv_git_name TYPE string .
-  DATA mv_git_email TYPE string .
-  DATA mv_git_comment TYPE string .
+    DATA mv_branch TYPE string .
+    DATA mv_git_url TYPE string .
+    DATA mv_packages TYPE tab_packages .
+    DATA mv_git_name TYPE string .
+    DATA mv_git_email TYPE string .
+    DATA mv_git_comment TYPE string .
 
-  METHODS build_stage
-    IMPORTING
-      !it_local       TYPE zif_abapgit_definitions=>ty_files_tt
-      !it_remote      TYPE zif_abapgit_definitions=>ty_files_tt
-    RETURNING
-      VALUE(rs_stage) TYPE ty_stage
-    RAISING
-      zcx_abapgit_exception .
-  METHODS get_local
-    RETURNING
-      VALUE(rt_local) TYPE zif_abapgit_definitions=>ty_files_tt
-    RAISING
-      zcx_abapgit_exception .
+    METHODS build_stage
+      IMPORTING
+        !it_local       TYPE zif_abapgit_definitions=>ty_files_tt
+        !it_remote      TYPE zif_abapgit_definitions=>ty_files_tt
+      RETURNING
+        VALUE(rs_stage) TYPE ty_stage
+      RAISING
+        zcx_abapgit_exception .
+    METHODS get_local
+      RETURNING
+        VALUE(rt_local) TYPE zif_abapgit_definitions=>ty_files_tt
+      RAISING
+        zcx_abapgit_exception .
   PRIVATE SECTION.
 ENDCLASS.
 
