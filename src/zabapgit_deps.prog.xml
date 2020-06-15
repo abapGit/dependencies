@@ -12,8 +12,8 @@
    <TPOOL>
     <item>
      <ID>R</ID>
-     <ENTRY>Dependencies</ENTRY>
-     <LENGTH>12</LENGTH>
+     <ENTRY>AbapLint: Dependent Sources generator</ENTRY>
+     <LENGTH>37</LENGTH>
     </item>
     <item>
      <ID>S</ID>
