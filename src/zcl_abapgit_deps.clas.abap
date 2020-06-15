@@ -4,7 +4,6 @@ CLASS zcl_abapgit_deps DEFINITION
 
   PUBLIC SECTION.
 
-    CLASS-METHODS class_constructor .
     METHODS constructor
       IMPORTING
         !iv_git_url     TYPE string
@@ -87,10 +86,6 @@ CLASS ZCL_ABAPGIT_DEPS IMPLEMENTATION.
       ENDIF.
     ENDLOOP.
 
-  ENDMETHOD.
-
-
-  METHOD class_constructor. "#EC NEEDED
   ENDMETHOD.
 
 

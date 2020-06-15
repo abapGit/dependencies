@@ -9,7 +9,7 @@ SELECT-OPTIONS: p_devc FOR tdevc-devclass OBLIGATORY.
 PARAMETERS: p_test   TYPE c AS CHECKBOX.
 
 SELECTION-SCREEN: SKIP,
-                  BEGIN OF BLOCK git WITH FRAME title l_title.
+                  BEGIN OF BLOCK git WITH FRAME TITLE l_title.
 PARAMETERS: p_cname  TYPE string DEFAULT 'upload',
             p_cemail TYPE string DEFAULT 'upload@localhost',
             p_ccomm  TYPE string DEFAULT 'Upload'.
