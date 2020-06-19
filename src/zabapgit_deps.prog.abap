@@ -10,9 +10,15 @@ PARAMETERS: p_test   TYPE c AS CHECKBOX.
 
 SELECTION-SCREEN: SKIP,
                   BEGIN OF BLOCK git WITH FRAME TITLE l_title.
+<<<<<<< HEAD
 PARAMETERS: p_cname  TYPE upload_source_kk DEFAULT 'upload',
             p_cemail TYPE upload_source_kk DEFAULT 'upload@localhost',
             p_ccomm  TYPE upload_source_kk DEFAULT 'Upload'.
+=======
+PARAMETERS: p_cname  TYPE string DEFAULT 'upload' LOWER CASE,
+            p_cemail TYPE string DEFAULT 'upload@localhost' LOWER CASE,
+            p_ccomm  TYPE string DEFAULT 'Upload' LOWER CASE.
+>>>>>>> 6bdaf6021b1d215beeaed3146ffb8a615ef954a2
 SELECTION-SCREEN: END OF BLOCK git.
 
 INCLUDE zabapgit_password_dialog.
