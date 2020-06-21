@@ -6,9 +6,11 @@ stages:
 
 before_script:
   - git --version
+  - git remote add source https://github.com/abapGit/dependencies.git
+  - git remote -v
 
 after_script:
-  - git log -5 --oneline --pretty=format:'\''%C(yellow)%h %C(reset)[%C(green)%aN,%C(reset) %C(cyan)%ad%C(reset)] %s'\'' --date=format:'\''%d.%m.%y %H:%M'\''
+  - git log -5 --oneline --pretty=format:'\''%C(yellow)%h %C(reset)[%C(green)%aN,%C(reset) %C(cyan)%ad%C(reset)] %s'\'' --date=format:'\''%d.%m.%y %H:%M'\'''
 
 do-pull:
   stage: github-pull
@@ -20,5 +22,5 @@ do-pull:
   # only:
   # - schedules
   script:
-  - git remote -v
-
+  - git pull source master
+  - git push origin master
