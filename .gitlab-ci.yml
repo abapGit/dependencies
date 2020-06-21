@@ -24,8 +24,9 @@ do-pull:
   tags:
   - docker
   # when: manual
-  # only:
-  # - schedules
+  only:
+  - schedules
+  - manual
   script:
   - git pull source master
-  - git push origin master
+  - git push origin HEAD:master
