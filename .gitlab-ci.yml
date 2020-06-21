@@ -6,7 +6,7 @@ stages:
 
 before_script:
   - git --version
-  - git origin set-url --push origin "https://gitlab-ci-token:TucNrMhDsCL9MSwDmhyC@vdocker.sap.internal:8929/tools/abaplint-dependencies.git"
+  - git remote origin set-url --push origin "https://gitlab-ci-token:TucNrMhDsCL9MSwDmhyC@vdocker.sap.internal:8929/tools/abaplint-dependencies.git"
   - git remote rm source
   - git remote add source https://github.com/abapGit/dependencies.git
   - git remote -v
