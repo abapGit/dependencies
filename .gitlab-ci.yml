@@ -5,8 +5,8 @@ stages:
   - github-pull
 
 before_script:
-  # - git remote set-url --push origin "https://gitlab-ci-token:TucNrMhDsCL9MSwDmhyC@vdocker.sap.internal:8929/tools/abaplint-dependencies.git"
-  - git remote add source https://github.com/abapGit/dependencies.git
+  - git remote set-url --push origin "${TOKEN_PUSH_URL}"
+  - git remote add source "${URL_SOURCE}"
   # - git remote -v
   - git config user.email "github@redwood.com"
   - git config user.name "github"
