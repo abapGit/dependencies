@@ -2,10 +2,10 @@
 # Pull from GitHub source repository
 #
 stages:
-  - pull
+  - github_pull
 
-pull:
-  stage: pull
+do_pull:
+  stage: github_pull
   image: alpine/git
   tags:
     - Docker
