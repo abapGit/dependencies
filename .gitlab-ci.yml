@@ -2,27 +2,25 @@
 # Pull from GitHub source repository
 #
 stages:
-  - github_pull
+  - github-pull
 
-do_pull:
-  stage: github_pull
+before_script:
+  - echo "Before script section"
+  - echo "For example you might run an update here or install a build dependency"
+  - echo "Or perhaps you might print out some debugging details"
+  - git --version
+
+after_script:
+  - echo "After script section"
+  - echo "For example you might do some cleanup here"
+
+do-pull:
+  stage: github-pull
   image: alpine/git
   tags:
-    - Docker
+  - Docker
   only:
-    - schedules
-
-  before_script:
-    - echo "Before script section"
-    - echo "For example you might run an update here or install a build dependency"
-    - echo "Or perhaps you might print out some debugging details"
-    - git --version
-
-  after_script:
-    - echo "After script section"
-    - echo "For example you might do some cleanup here"
-
-  pull_github:
-    script:
-      - echo "Do your build here"
+  - schedules
+  script:
+  - echo "Do your build here"
 
