@@ -1,15 +1,17 @@
 #
 # Pull from GitHub source repository
 #
-on-schedule:
-  stage: pull
-  only:
-    - schedules
+stages:
+  - pull
 
 pull:
+  stage: pull
   image: alpine/git
   tags:
     - Docker
+  only:
+    - schedules
+
   before_script:
     - echo "Before script section"
     - echo "For example you might run an update here or install a build dependency"
