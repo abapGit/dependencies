@@ -5,7 +5,7 @@ stages:
   - github-pull
 
 before_script:
-  - git remote set-url --push origin "${TOKEN_PUSH_URL}"
+  - git remote set-url --push origin "${TOKEN_URL_PUSH}"
   - git remote add source "${URL_SOURCE}"
   - git remote -v
   - git config user.email "github@redwood.com"
