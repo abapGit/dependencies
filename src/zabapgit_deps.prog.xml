@@ -12,8 +12,26 @@
    <TPOOL>
     <item>
      <ID>R</ID>
-     <ENTRY>Dependencies</ENTRY>
-     <LENGTH>12</LENGTH>
+     <ENTRY>AbapLint: Dependent Sources generator</ENTRY>
+     <LENGTH>37</LENGTH>
+    </item>
+    <item>
+     <ID>S</ID>
+     <KEY>P_CCOMM</KEY>
+     <ENTRY>comment</ENTRY>
+     <LENGTH>27</LENGTH>
+    </item>
+    <item>
+     <ID>S</ID>
+     <KEY>P_CEMAIL</KEY>
+     <ENTRY>email of user</ENTRY>
+     <LENGTH>33</LENGTH>
+    </item>
+    <item>
+     <ID>S</ID>
+     <KEY>P_CNAME</KEY>
+     <ENTRY>user</ENTRY>
+     <LENGTH>24</LENGTH>
     </item>
     <item>
      <ID>S</ID>

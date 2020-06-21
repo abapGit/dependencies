@@ -70,15 +70,20 @@ CLASS ZCL_ABAPGIT_DEPS_FIND IMPLEMENTATION.
 
 * do not use CL_WB_RIS_ENVIRONMENT, it does not exist in 740sp08
 
-    LOOP AT it_senvi INTO DATA(ls_senvi) WHERE type = 'CLAS'
-        OR type = 'DTEL'
-        OR type = 'TABL'
-        OR type = 'TYPE'
-        OR type = 'INTF'.
-
-      APPEND VALUE #(
-        ref_obj_type = ls_senvi-type
-        ref_obj_name = ls_senvi-object ) TO rt_tadir.
+    LOOP AT it_senvi INTO DATA(ls_senvi).
+      IF ls_senvi-type = 'CLAS'
+          OR ls_senvi-type = 'DTEL'
+          OR ls_senvi-type = 'TABL'
+          OR ls_senvi-type = 'TYPE'
+          OR ls_senvi-type = 'INTF'.
+        APPEND VALUE #(
+          ref_obj_type = ls_senvi-type
+          ref_obj_name = ls_senvi-object ) TO rt_tadir.
+      ELSEIF ls_senvi-type = 'INCL'.
+        APPEND VALUE #(
+          ref_obj_type = 'PROG'
+          ref_obj_name = ls_senvi-object ) TO rt_tadir.
+      ENDIF.
     ENDLOOP.
 
   ENDMETHOD.
@@ -211,7 +216,6 @@ CLASS ZCL_ABAPGIT_DEPS_FIND IMPLEMENTATION.
     DELETE lt_tadir WHERE ref_obj_type = 'SUSO'.
     DELETE lt_tadir WHERE ref_obj_type = 'TYPE'.
     DELETE lt_tadir WHERE ref_obj_type = 'TTYP'.
-    DELETE lt_tadir WHERE ref_obj_type = 'PROG'.
     DELETE lt_tadir WHERE ref_obj_type = 'DOMA'.
     DELETE lt_tadir WHERE ref_obj_type = 'XSLT'.
     DELETE lt_tadir WHERE ref_obj_type = 'SHLP'.
