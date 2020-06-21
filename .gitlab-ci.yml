@@ -19,8 +19,8 @@ do-pull:
   image: alpine/git
   tags:
   - Docker
-  only:
-  - schedules
+  # only:
+  # - schedules
   script:
   - echo "Do your build here"
 
