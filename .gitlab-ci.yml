@@ -18,7 +18,7 @@ do-pull:
   stage: github-pull
   image: alpine/git
   tags:
-  - Docker
+  - docker
   # only:
   # - schedules
   script:
