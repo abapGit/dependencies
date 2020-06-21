@@ -8,9 +8,11 @@ before_script:
   - git --version
   - git remote add source https://github.com/abapGit/dependencies.git
   - git remote -v
+  - git config user.email "github@redwood.com"
+  - git config user.name "github"
 
 after_script:
-  - git log -5 --oneline --pretty=format:'\''%C(yellow)%h %C(reset)[%C(green)%aN,%C(reset) %C(cyan)%ad%C(reset)] %s'\'' --date=format:'\''%d.%m.%y %H:%M'\'''
+  - 'git log -5 --oneline --pretty=format:'\''%C(yellow)%h %C(reset)[%C(green)%aN,%C(reset) %C(cyan)%ad%C(reset)] %s'\'' --date=format:'\''%d.%m.%y %H:%M'\'''''
 
 do-pull:
   stage: github-pull
