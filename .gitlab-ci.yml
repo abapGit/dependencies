@@ -12,7 +12,9 @@ after_script:
 
 do-pull:
   stage: github-pull
-  image: alpine/git
+  image: 
+    name: alpine/git
+    entrypoint: [""]
   tags:
   - docker
   # only:
