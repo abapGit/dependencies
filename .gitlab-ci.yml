@@ -6,6 +6,7 @@ stages:
 
 before_script:
   - git --version
+  - git remote rm source
   - git remote add source https://github.com/abapGit/dependencies.git
   - git remote -v
   - git config user.email "github@redwood.com"
