@@ -10,7 +10,7 @@ before_script:
   # - git remote -v
   - git config user.email "github@redwood.com"
   - git config user.name "github"
-  - git config http.sslverify false
+#   - git config http.sslverify false
 
 after_script:
   - git log -5 --oneline
