@@ -72,9 +72,13 @@ CLASS ZCL_ABAPGIT_DEPS_FIND IMPLEMENTATION.
 
     LOOP AT it_senvi INTO DATA(ls_senvi).
       IF ls_senvi-type = 'CLAS'
+          OR ls_senvi-type = 'STRU'
+          OR ls_senvi-type = 'TTYP'
+          OR ls_senvi-type = 'VIEW'
           OR ls_senvi-type = 'DTEL'
           OR ls_senvi-type = 'TABL'
           OR ls_senvi-type = 'TYPE'
+          OR ls_senvi-type = 'MSAG'
           OR ls_senvi-type = 'INTF'.
         APPEND VALUE #(
           ref_obj_type = ls_senvi-type

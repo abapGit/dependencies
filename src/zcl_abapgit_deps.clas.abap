@@ -79,7 +79,7 @@ CLASS ZCL_ABAPGIT_DEPS IMPLEMENTATION.
         path = ls_remote-path
         filename = ls_remote-filename TRANSPORTING NO FIELDS.
       IF sy-subrc <> 0.
-        WRITE: / 'Remove', ls_local-path, ls_local-filename.
+        WRITE: / 'Remove', ls_remote-path, ls_remote-filename.
         rs_stage-stage->rm(
           iv_path     = ls_remote-path
           iv_filename = ls_remote-filename ).
@@ -103,13 +103,22 @@ CLASS ZCL_ABAPGIT_DEPS IMPLEMENTATION.
 
   METHOD get_local.
 
-    DATA: lp_package LIKE LINE OF mv_packages.
+    DATA lo_find TYPE REF TO zcl_abaplint_deps_find.
 
-    LOOP AT mv_packages INTO lp_package.
-      DATA(lt_tadir) = NEW zcl_abapgit_deps_find( lp_package )->find( ).
-      DATA(lt_local) = NEW zcl_abapgit_deps_serializer( )->serialize( lt_tadir ).
-      APPEND LINES OF lt_local TO rt_local.
-    ENDLOOP.
+    CREATE OBJECT lo_find
+      EXPORTING
+        iv_max_level = 1.
+
+
+    DATA(lt_tadir) = lo_find->find_by_packages( mv_packages ).
+    DATA(lt_local) = NEW zcl_abapgit_deps_serializer( )->serialize( lt_tadir ).
+    APPEND LINES OF lt_local TO rt_local.
+
+*    LOOP AT mv_packages INTO lp_package.
+*      DATA(lt_tadir) = NEW zcl_abapgit_deps_find( lp_package )->find( ).
+*      DATA(lt_local) = NEW zcl_abapgit_deps_serializer( )->serialize( lt_tadir ).
+*      APPEND LINES OF lt_local TO rt_local.
+*    ENDLOOP.
 
   ENDMETHOD.
 
