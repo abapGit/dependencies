@@ -1,6 +1,6 @@
 # DEPRECATED
 
-use https://github.com/abaplint/abaplint-abap-backend instead
+use https://github.com/abaplint/abaplint-sci-client instead
 
 # dependencies
 ~~Serialize dependencies of a package structure to git.~~
